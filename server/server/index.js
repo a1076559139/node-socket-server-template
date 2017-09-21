@@ -14,7 +14,7 @@ io.on('connection', async function (client) {
     };
     client.UserEvents = {};
     if (!client.UserEvents['open']) {
-        client.UserEvents['open'] = new require('./../cmds/connect')(client)
+        client.UserEvents['open'] = new require('./../events/connect')(client)
     }
     // 调用connect
     let open = client.UserEvents['open'];

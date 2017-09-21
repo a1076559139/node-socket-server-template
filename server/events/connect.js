@@ -7,7 +7,9 @@ var connect = function (client) {
 };
 
 connect.prototype.before = function () {
-
+    console.log('before connect');
+    let query = this.client.handshake.query;
+    this.name = query.name;
 };
 
 connect.prototype.do = function () {
@@ -20,13 +22,10 @@ connect.prototype.do = function () {
     this.client.to(query.room).broadcast.emit('ll', this.client.id);
     // 存储用户数据
     this.client.setUserData('room', query.room);
-
-    this.name = 'a';
 };
 
 connect.prototype.after = function () {
     // 读取用户数据
     let room = this.client.getUserData('room');
-    console.log('after', room);
-    console.log('after', this.name);
+    console.log('after connect', room, this.name);
 };

@@ -10,7 +10,7 @@ function readdirSync(path) {
             if (file !== 'open.js') {
                 let fn = require('./../' + validPath);
                 if (typeof fn === 'function') {
-                    cmds[validPath.slice(5, validPath.length - 3)] = require('./../' + validPath);
+                    cmds[validPath.slice(7, validPath.length - 3).replace(/\//g,'.')] = require('./../' + validPath);
                 } else {
                     throw './../' + validPath + ' is not function';
                 }
@@ -20,7 +20,7 @@ function readdirSync(path) {
         }
     }
 }
-readdirSync('cmds');
+readdirSync('events');
 
 module.exports = function (client) {
     for (let k in cmds) {
