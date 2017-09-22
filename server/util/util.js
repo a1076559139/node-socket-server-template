@@ -183,58 +183,6 @@ var util = {
     //     if (r != null) return unescape(r[2]);
     //     return null;
     // },
-
-    /**
-     * [quickSort 快速排序]
-     * @param  {[Array]} arr        [数组]
-     * @param  {[Function]} cb      [判断回掉(值1, 值2)]
-     * @return {[Array]}            [排好序的数组]
-     */
-    quickSort: function (arr, cb) {
-        //如果数组<=1,则直接返回
-        if (arr.length <= 1) { return arr; }
-        let pivotIndex = Math.floor(arr.length / 2);
-        //找基准
-        let pivot = arr[pivotIndex];
-        //定义左右数组
-        let left = [];
-        let right = [];
-
-        //比基准小的放在left，比基准大的放在right
-        for (let i = 0; i < arr.length; i++) {
-            if (i !== pivotIndex) {
-                if (cb) {
-                    if (cb(arr[i], pivot)) {
-                        left.push(arr[i]);
-                    } else {
-                        right.push(arr[i]);
-                    }
-                } else {
-                    if (arr[i] <= pivot) {
-                        left.push(arr[i]);
-                    } else {
-                        right.push(arr[i]);
-                    }
-                }
-            }
-        }
-        //递归
-        return util.quickSort(left, cb).concat([pivot], util.quickSort(right, cb));
-    },
-
-    /**
-     * [quickSortIndex 快速排序(返回下标)]
-     * @param  {[Number]} length     [数组大小]
-     * @param  {[Function]} cb      [判断回掉(下标1, 下标2)]
-     * @return {[Array]}            [排好序的数组下标]
-     */
-    quickSortIndex: function (length, cb) {
-        var arr = [];
-        for (var i = 0; i < length; i++) {
-            arr.push(i);
-        }
-        return util.quickSort(arr, cb);
-    }
 };
 
 
