@@ -13,11 +13,11 @@ io.on('connection', async function (client) {
         return this.setUserData[k];
     };
     client.UserEvents = {};
-    if (!client.UserEvents['open']) {
-        client.UserEvents['open'] = new require('./../events/connect')(client)
+    if (!client.UserEvents['connect']) {
+        client.UserEvents['connect'] = new require('./../events/connect')(client)
     }
     // 调用connect
-    let open = client.UserEvents['open'];
+    let open = client.UserEvents['connect'];
     open.before && await open.before();
     open.do && await open.do();
     open.after && await open.after();
