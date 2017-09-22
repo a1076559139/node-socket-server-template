@@ -22,6 +22,9 @@ adapter.subClient.on('close', function () {
 
 module.exports = adapter;
 
+/**
+ * 使用redis集群
+ */
 // var Redis = require('ioredis');
 
 // var cluster = new Redis.Cluster([{
@@ -31,6 +34,7 @@ module.exports = adapter;
 //     port: 6380,
 //     host: 'localhost'
 // }]);
+// module.exports = cluster;
 
 // cluster.set('foo', 'bar');
 // cluster.get('foo', function (err, res) {
