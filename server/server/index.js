@@ -11,6 +11,7 @@ io.on('connection', async function (client) {
      * 为client添加UserData属性及setUserData和getUserData方法
      */
     bindUserData(client);
+    
     /**
      * 绑定用户events
      * 

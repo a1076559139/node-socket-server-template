@@ -7,13 +7,11 @@ function readdirSync(path) {
         let file = fs_cmds[i];
         let validPath = path + '/' + file;
         if (file.endsWith('.js')) {
-            if (file !== 'open.js') {
-                let fn = require('./../' + validPath);
-                if (typeof fn === 'function') {
-                    cmds[validPath.slice(7, validPath.length - 3).replace(/\//g, '.')] = require('./../' + validPath);
-                } else {
-                    throw './../' + validPath + ' is not function';
-                }
+            let fn = require('./../' + validPath);
+            if (typeof fn === 'function') {
+                cmds[validPath.slice(7, validPath.length - 3).replace(/\//g, '.')] = fn;
+            } else {
+                throw './../' + validPath + ' is not function';
             }
         } else {
             readdirSync(validPath);
