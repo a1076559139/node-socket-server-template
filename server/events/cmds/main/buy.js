@@ -6,16 +6,16 @@ var buy = function (client) {
     this.client = client;
 };
 
-buy.prototype.before = function () {
+buy.prototype.before = async function () {
     console.log('before buy');
 };
 
-buy.prototype.do = function (fn) {
+buy.prototype.do = async function (fn) {
     this.money = this.money ? this.money : Math.round(Math.random() * 99 + 1);
-    console.log('buy',this.money);
+    console.log('buy', this.money);
     fn(this.money);
 };
 
-buy.prototype.after = function () {
+buy.prototype.after = async function () {
     console.log('after buy');
 };

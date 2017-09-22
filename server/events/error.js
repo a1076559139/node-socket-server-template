@@ -6,14 +6,14 @@ var error = function (client) {
     this.client = client;
 };
 
-error.prototype.before = function () {
+error.prototype.before = async function () {
     console.log('before error');
 };
 
-error.prototype.do = function () {
+error.prototype.do = async function () {
     console.log('error');
 };
 
-error.prototype.after = function () {
+error.prototype.after = async function () {
     console.log('after error');
 };

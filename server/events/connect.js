@@ -6,13 +6,13 @@ var connect = function (client) {
     this.client = client;
 };
 
-connect.prototype.before = function () {
+connect.prototype.before = async function () {
     // console.log('before connect');
     // let query = this.client.handshake.query;
     // this.name = query.name;
 };
 
-connect.prototype.do = function () {
+connect.prototype.do = async function () {
     // let query = this.client.handshake.query;
     // console.log('connect', this.client.id);
 
@@ -23,12 +23,13 @@ connect.prototype.do = function () {
     // // 存储用户数据
     // this.client.setUserData('room', query.room);
 
-    this.client.schedule(function (dt) {
-        this.emit('say', dt);
-    }, 1000, 1, 1000);
+    this.schedule(function (dt) {
+        console.log('say', dt);
+        this.client.emit('say', dt);
+    }, 1000);
 };
 
-connect.prototype.after = function () {
+connect.prototype.after = async function () {
     // 读取用户数据
     // let room = this.client.getUserData('room');
     // console.log('after connect', room, this.name);

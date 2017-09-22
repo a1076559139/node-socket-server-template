@@ -6,14 +6,14 @@ var disconnect = function (client) {
     this.client = client;
 };
 
-disconnect.prototype.before = function () {
+disconnect.prototype.before = async function () {
     console.log('before disconnect');
 };
 
-disconnect.prototype.do = function () {
+disconnect.prototype.do = async function () {
     console.log('disconnect');
 };
 
-disconnect.prototype.after = function () {
+disconnect.prototype.after = async function () {
     console.log('after disconnect');
 };

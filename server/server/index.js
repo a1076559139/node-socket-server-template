@@ -27,6 +27,16 @@ io.on('connection', async function (client) {
      */
     bindUserData(client);
 
+    for (let k in client.UserEvents) {
+        client.UserEvents[k].connected = true;
+    }
+
+    client.on('disconnect', function () {
+        for (let k in client.UserEvents) {
+            client.UserEvents[k].connected = false;
+        }
+    });
+
     /**
      * 手动调用触发connect事件
      */
