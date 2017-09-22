@@ -93,12 +93,10 @@ module.exports = function (client) {
     for (let k in client.UserEvents) {
         for (let kk in schedule) {
             client.UserEvents[k][kk] = schedule[kk];
-            console.log(kk);
         }
     }
 
     client.on('disconnect', function () {
-        // this.unscheduleAllCallbacks();
         for (let k in client.UserEvents) {
             client.UserEvents[k].unscheduleAllCallbacks();
         }
