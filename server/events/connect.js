@@ -23,9 +23,9 @@ connect.prototype.do = async function () {
     // // 存储用户数据
     // this.client.setUserData('room', query.room);
 
-    this.schedule(function (dt) {
+    this.client.schedule(function (dt) {
         console.log('say', dt);
-        this.client.emit('say', dt);
+        this.emit('say', dt);
     }, 1000);
 };
 
