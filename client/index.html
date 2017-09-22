@@ -1,5 +1,6 @@
 <script src="./socket.io.js"></script>
 <script>
-    var socket = new io('http://192.168.103.200:3000?name=xiaoming&room=b');
-    socket.emit('cmds.main.buy', function (d) { console.log(d) })
+    var socket = new io('http://192.168.103.200:3000?name=xiaoming&room=b', { path: '/game' });
+    socket.emit('cmds.main.buy', function (d) { console.log(d) });
+    socket.on('say', function (d) { console.log(d) });
 </script>

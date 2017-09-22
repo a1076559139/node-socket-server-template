@@ -14,6 +14,7 @@ module.exports = {
              * @default '/socket.io'
              */
             // path?: string;
+            path: '/game',
 
             /**
              * Should we serve the client file?

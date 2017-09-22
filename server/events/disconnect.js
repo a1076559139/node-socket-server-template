@@ -7,7 +7,7 @@ var disconnect = function (client) {
 };
 
 disconnect.prototype.before = function () {
-
+    console.log('before disconnect');
 };
 
 disconnect.prototype.do = function () {
@@ -15,5 +15,5 @@ disconnect.prototype.do = function () {
 };
 
 disconnect.prototype.after = function () {
-
+    console.log('after disconnect');
 };
