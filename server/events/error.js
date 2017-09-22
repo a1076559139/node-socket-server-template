@@ -7,7 +7,7 @@ var error = function (client) {
 };
 
 error.prototype.before = function () {
-
+    console.log('before error');
 };
 
 error.prototype.do = function () {
@@ -15,5 +15,5 @@ error.prototype.do = function () {
 };
 
 error.prototype.after = function () {
-
+    console.log('after error');
 };

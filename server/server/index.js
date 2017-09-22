@@ -13,6 +13,11 @@ io.on('connection', async function (client) {
      */
     bindEvents(client);
 
+    /**
+     * 绑定定时器方法
+     * 
+     * 为client添加UserEvents属性并自动on事件
+     */
     bindSchedule(client);
 
     /**
@@ -26,8 +31,6 @@ io.on('connection', async function (client) {
      * 手动调用触发connect事件
      */
     client.listeners('connect')[0].call(client);
-
-    global.client = client;
 });
 io.listen(config.server.port, config.server.serverOptions);
 
