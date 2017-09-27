@@ -1,10 +1,10 @@
 module.exports = {
     adapter: {
-        host: '47.90.100.170',
+        host: '127.0.0.1',
         port: 9999,
         db: 0,
         // auth_pass?: string, 
-        password: 'duibuqi55CUOLEYA'
+        // password?: string
     },
     server: {
         port: 3000,
