@@ -1,6 +1,6 @@
 module.exports = {
     adapter: {
-        host: 'localhost',
+        host: '127.0.0.1',
         port: 6379,
         db: 0,
         // auth_pass?: string, 

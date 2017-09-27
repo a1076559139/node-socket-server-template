@@ -25,18 +25,14 @@ module.exports = adapter;
 /**
  * 使用redis集群
  */
-// var Redis = require('ioredis');
+// const Redis = require('ioredis');
 
-// var cluster = new Redis.Cluster([{
-//     port: 6379,
-//     host: 'localhost'
-// }, {
-//     port: 6380,
-//     host: 'localhost'
-// }]);
-// module.exports = cluster;
+// const cluster = new Redis.Cluster(config.adapter);
 
-// cluster.set('foo', 'bar');
-// cluster.get('foo', function (err, res) {
-//     console.log(err, res);
+// cluster.on('error', function (err) {
+//     console.log('cluster error ' + err);
+//     console.log('cluster node error', err.lastNodeError);
 // });
+
+// const redis = require('socket.io-redis');
+// module.exports = redis({ pubClient: cluster, subClient: cluster });

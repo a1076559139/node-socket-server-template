@@ -14,7 +14,7 @@ connect.prototype.before = async function () {
 
 connect.prototype.do = async function () {
     // let query = this.client.handshake.query;
-    // console.log('connect', this.client.id);
+    console.log('connect', this.client.id);
 
     // // 加入房间
     // this.client.join(query.room);
@@ -23,10 +23,10 @@ connect.prototype.do = async function () {
     // // 存储用户数据
     // this.client.setUserData('room', query.room);
 
-    this.client.schedule(function (dt) {
-        console.log('say', dt);
-        this.emit('say', dt);
-    }, 1000);
+    // this.client.schedule(function (dt) {
+    //     console.log('say', dt);
+    //     this.emit('say', dt);
+    // }, 1000);
 };
 
 connect.prototype.after = async function () {

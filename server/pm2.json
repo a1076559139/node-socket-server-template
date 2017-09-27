@@ -1,0 +1,20 @@
+{
+    "apps": [
+        {
+            "name": "node-socket-server-template1",
+            "script": "index.js",
+            "args": [20000]
+            // "env": {
+            //     "NODE_ENV": "production"
+            // }
+        },
+        {
+            "name": "node-socket-server-template2",
+            "script": "index.js",
+            "args": [20001]
+            // "env": {
+            //     "NODE_ENV": "production"
+            // }
+        }
+    ]
+}
