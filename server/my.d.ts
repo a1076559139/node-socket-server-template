@@ -1,15 +1,12 @@
-/**********************************************************
-类型判断工具
-**********************************************************/
 var array = {
     /**
-     * 判断是否是数组
+     * 判断是否是对象
      * 
      * @param {any} param 
      * @returns {Boolean}
      */
     isArray: function (param) {
-        return typeof param === 'object' && param !== null && typeof param.length !== 'undefined';
+        return param instanceof Array;
     },
     /**
      * 将参数强转成数组格式,不带有length属性将返回null
@@ -95,12 +92,8 @@ var array = {
             return null;
         }
     },
-
     /**
      * 快速排序
-     * @param  {Array} arr        [数组]
-     * @param  {Function} cb      [判断回掉(值1, 值2)]
-     * @return {Array}            [排好序的数组]
      */
     quickSort: function (arr, cb) {
         //如果数组<=1,则直接返回
@@ -131,21 +124,7 @@ var array = {
             }
         }
         //递归
-        return array.quickSort(left, cb).concat([pivot], array.quickSort(right, cb));
-    },
-
-    /**
-     * 快速排序(下标)
-     * @param  {Array} arr        [数组长度]
-     * @param  {Function} cb      [判断回掉(下标1, 下标2)]
-     * @return {Array}            [排好序的数组]
-     */
-    quickSortIndex: function (length, cb) {
-        var arr = [];
-        for (var i = 0; i < length; i++) {
-            arr.push(i);
-        }
-        return array.quickSort(arr, cb);
+        return this.quickSort(left, cb).concat([pivot], this.quickSort(right, cb));
     }
 };
 var bool = {
@@ -167,13 +146,6 @@ var bool = {
      */
     toBool: function (param) {
         return !!param;
-    },
-
-    /**
-     * 随机一个bool值
-     */
-    random: function () {
-        return Math.random() >= 0.5;
     }
 };
 var fun = {
@@ -209,7 +181,7 @@ var number = {
      *   .1    1.  01   01.         不是数字
      *   0.1  1.0   1   1.0   1.00  是数字
      */
-    isNumber: function (param, judge) {
+    isNumber: function (param: any, judge?: any) {
         if (/^-?([1-9]\d*|[0-9])(\.\d+)?$/.test(param) || param == 0) {
             if (typeof judge === 'string') {
                 judge = judge.replace(/@/g, param);
@@ -225,7 +197,7 @@ var number = {
 
     /**
      * 判断是否是int型的数字或字符串
-     * @param {String} param
+     * @param {any} param
      * @param {String} judge
      * @returns {Boolean}
      * 
@@ -234,7 +206,7 @@ var number = {
      * isInt(1.0);      //true
      * isInt('1.0');    //false
      */
-    isInt: function (param, judge) {
+    isInt: function (param: any, judge?: string) {
         if (number.isNumber(param, judge) && param.toString().indexOf('.') === -1) {
             return true;
         }
@@ -252,7 +224,7 @@ var number = {
      * isFloat(1.0);      //false
      * isFloat('1.0');    //true
      */
-    isFloat: function (param, judge) {
+    isFloat: function (param: any, judge?: any) {
         if (number.isNumber(param, judge) && param.toString().indexOf('.') !== -1) {
             return true;
         }
@@ -299,11 +271,11 @@ var number = {
      * @param {Number} fixed 
      * @returns {Number}
      */
-    random: function (min, max, fixed) {
+    random: function (min: number, max: number, fixed?: number) {
         min = number.toNumber(min);
         max = number.toNumber(max);
         fixed = number.toInt(fixed) || 0;
-        if (min === null || max === null || min > max || fixed < 0) {
+        if (min === null || max === null || min >= max || fixed < 0) {
             throw 'min or max is error param';
         }
         var n;
@@ -362,6 +334,50 @@ var object = {
             return i;
         }
         return null;
+    },
+    /**
+     * 判断对象内的key是否符合标准
+     * 
+     * @param {any} param 
+     * @returns {error}
+     */
+    judge: function (object: object, judge: object) {
+        if (this.isObject(object) && this.isObject(judge)) {
+            for (var k in judge) {
+                var key = judge[k];
+                if (!TYPE[key] || !this[key]['is' + key](object[k])) {
+                    return k + '必须是' + key + '类型，而非' + (typeof object[k]);
+                }
+            }
+            return null;
+        }
+        return '传入的参数必须是两个对象:' + (typeof object) + ' ' + (typeof judge);
+    },
+    /**
+     * 将对象内的key强转成指定类型
+     * 
+     * @param {any} param 
+     * @returns {error}
+     */
+    transform: function (object: object, judge: object) {
+        if (this.Object.isObject(object) && this.Object.isObject(judge)) {
+            for (var k in judge) {
+                var key = judge[k];
+                if (TYPE[key]) {
+                    try {
+                        if (this[key]['is' + key](object[k])) {
+                            object[k] = this[key]['to' + key](object[k]);
+                        } else {
+                            return '转换失败 ' + k + '不是' + key + '类型';
+                        }
+                    } catch (e) {
+                        return '转换失败 ' + e.toString();
+                    }
+                }
+            }
+            return null;
+        }
+        return '传入的参数必须是两个对象:' + (typeof object) + ' ' + (typeof judge);
     }
 };
 var string = {
@@ -386,40 +402,6 @@ var string = {
         } catch (e) {
             return null;
         }
-    },
-
-    /**
-     * 返回指定长度字符串
-     * 
-     * @param {string|number} i 数字
-     * @param {number} length   长度
-     * @param {number} b        补截[0-前 1-后]
-     * @param {string|number} s 补充用符
-     * @returns 
-     */
-    fixLength: function (i, length, b, s) {
-        i = i + '';
-        if (arguments.length < 3) {
-            b = 0;
-        }
-        if (arguments.length < 4) {
-            s = '0';
-        }
-        while (i.length < length) {
-            if (b == 0) {
-                i = s + i;
-            } else {
-                i = i + s;
-            }
-        }
-        if (i.length > length) {
-            if (b == 0) {
-                i = i.slice(-length);
-            } else {
-                i = i.slice(0, length);
-            }
-        }
-        return i;
     }
 };
 
@@ -432,8 +414,8 @@ var TYPE = {
     String: 'STRING'
 };
 
-var util = {
-    TYPE: {
+declare namespace type {
+    const TYPE = {
         ARRAY: 'Array',
         BOOLEAN: 'Boolean',
         FUNCTION: 'Function',
@@ -444,27 +426,27 @@ var util = {
     /**
      * 库：数组类型
      */
-    Array: array,
+    const Array = array,
     /**
      * 库：布尔类型
      */
-    Boolean: bool,
+    const Boolean = bool,
     /**
      * 库：方法类型
      */
-    Function: fun,
+    const Function = fun,
     /**
      * 库：数字类型
      */
-    Number: number,
+    const Number = number,
     /**
      * 库：对象类型
      */
-    Object: object,
+    const Object = object,
     /**
      * 库：字符串类型
      */
-    String: string,
+    const String = string,
 
     /**
      * 方法：判断变量是否存在
@@ -472,7 +454,7 @@ var util = {
      * @param {any} param 
      * @returns {Boolean}
      */
-    isExist: function isExist(param) {
+    const isExist = function isExist(param) {
         return typeof param !== 'undefined';
     },
 
@@ -482,7 +464,7 @@ var util = {
      * @param {any} param 
      * @returns {Boolean}
      */
-    isNotExist: function isNotExist(param) {
+    const isNotExist = function isNotExist(param) {
         return typeof param === 'undefined';
     },
 
@@ -493,7 +475,7 @@ var util = {
      * @param {funtion} parent 
      * @returns {Boolean}
      */
-    isChildOf: function isChildOf(child, parent) {
+    const isChildOf = function isChildOf(child: any, parent: Function) {
         return object.isObject(child) && fun.isFunction(parent) && child instanceof parent;
     },
 
@@ -503,7 +485,7 @@ var util = {
      * @param {any} param 
      * @returns {string}
      */
-    getType: function (param) {
+    const getType = function (param) {
         return Object.prototype.toString.call(param).slice(8, -1).toLowerCase();
     },
 
@@ -514,54 +496,7 @@ var util = {
      * @param {string} type 
      * @returns {Boolean}
      */
-    isType: function (param, type) {
+    const isType = function (param, type: string) {
         return this.getType(param) === type;
-    },
-
-    /**
-     * 判断对象内的key是否符合标准
-     * 
-     * @param {any} param 
-     * @returns {error}
-     */
-    judge: function (object, judge) {
-        if (this.Object.isObject(object) && this.Object.isObject(judge)) {
-            for (var k in judge) {
-                var key = judge[k];
-                if (!TYPE[key] || !this[key]['is' + key](object[k])) {
-                    return k + '必须是' + key + '类型，而非' + this.getType(object[k]);
-                }
-            }
-            return null;
-        }
-        return '传入的参数必须是两个对象:' + this.getType(object) + ' ' + this.getType(judge);
-    },
-    /**
-     * 将对象内的key强转成指定类型
-     * 
-     * @param {any} param 
-     * @returns {error}
-     */
-    transform: function (object, judge) {
-        if (this.Object.isObject(object) && this.Object.isObject(judge)) {
-            for (var k in judge) {
-                var key = judge[k];
-                if (TYPE[key]) {
-                    try {
-                        if (this[key]['is' + key](object[k])) {
-                            object[k] = this[key]['to' + key](object[k]);
-                        } else {
-                            return '转换失败 ' + k + '不是' + key + '类型';
-                        }
-                    } catch (e) {
-                        return '转换失败 ' + e.toString();
-                    }
-                }
-            }
-            return null;
-        }
-        return '传入的参数必须是两个对象:' + this.getType(object) + ' ' + this.getType(judge);
     }
-};
-
-module.exports = util;
+}

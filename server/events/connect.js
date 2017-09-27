@@ -24,9 +24,8 @@ connect.prototype.do = async function () {
     // this.client.setUserData('room', query.room);
 
     // this.client.schedule(function (dt) {
-    //     console.log('say', dt);
-    //     this.emit('say', dt);
-    // }, 1000);
+    //     this.emit('shouZhuFu', { text: '我是测试文字啦啦啦', name: 'zp' });
+    // }, 2000);
 };
 
 connect.prototype.after = async function () {

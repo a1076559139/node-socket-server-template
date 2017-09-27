@@ -7,11 +7,15 @@ function readdirSync(path) {
         let file = fs_cmds[i];
         let validPath = path + '/' + file;
         if (file.endsWith('.js')) {
-            let fn = require('./../' + validPath);
-            if (typeof fn === 'function') {
-                cmds[validPath.slice(7, validPath.length - 3).replace(/\//g, '.')] = fn;
-            } else {
-                throw './../' + validPath + ' is not function';
+            try {
+                let fn = require('./../' + validPath);
+                if (typeof fn === 'function') {
+                    cmds[validPath.slice(7, validPath.length - 3).replace(/\//g, '.')] = fn;
+                } else {
+                    throw Error('./../' + validPath + ' is not function');
+                }
+            } catch (e) {
+                logError(__filename, 'readdirSync', e.message + ' in ./../' + validPath);
             }
         } else {
             readdirSync(validPath);
@@ -26,10 +30,15 @@ module.exports = function (client) {
         if (!client.UserEvents[k]) {
             client.UserEvents[k] = new cmds[k](client);
             client.on(k, async function (...args) {
-                let main = this.UserEvents[k];
-                main.before && await main.before(...args);
-                main.do && await main.do(...args);
-                main.after && await main.after(...args);
+                try {
+                    let main = this.UserEvents[k];
+                    if (!main.before || await main.before(...args) !== false) {
+                        main.do && await main.do(...args);
+                        main.after && await main.after(...args);
+                    }
+                } catch (e) {
+                    logError(__filename, k, e);
+                }
             });
         }
     }

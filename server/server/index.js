@@ -3,7 +3,7 @@ const bindSchedule = require('./bindSchedule');
 const bindUserData = require('./bindUserData');
 
 const io = require('socket.io')();
-io.adapter(require('./adapter'));
+// io.adapter(require('./adapter'));
 
 io.on('connection', async function (client) {
     /**

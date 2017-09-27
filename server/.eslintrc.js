@@ -5,7 +5,10 @@ module.exports = {
     },
     "globals": {
         "io": true,
-        "config": true
+        "config": true,
+        "libs": true,
+        "logSuccess":true,
+        "logError":true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
