@@ -29,18 +29,12 @@ db.putZhuFu = async function (data) {
 
 db.getZhuFu = async function () {
     let length = await awaitDoErr(__filename, redis, 'llen', redis_key);
-    if (length > 10) {
-        let index = type.Number.random(0, length - 1);
-        let string = await awaitDoErr(__filename, redis, 'lindex', redis_key, index);
-        return JSON.parse(string);
+    let index = type.Number.random(0, texts.length - 1 + length);
+    if (index < texts.length) {
+        return texts[index];
     } else {
-        let index = type.Number.random(0, texts.length - 1 + length);
-        if (index < texts.length) {
-            return texts[index];
-        } else {
-            let string = await awaitDoErr(__filename, redis, 'lindex', redis_key, index - texts.length);
-            return JSON.parse(string);
-        }
+        let string = await awaitDoErr(__filename, redis, 'lindex', redis_key, index - texts.length);
+        return JSON.parse(string);
     }
 }
 
