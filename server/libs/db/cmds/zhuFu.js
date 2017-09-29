@@ -25,7 +25,6 @@ db.putZhuFu = async function (data, cb) {
         return cb('参数错误');
     }
     await awaitDoErr(__filename, redis, 'rpush', redis_key, data);
-    cb(null);
 }
 
 db.getZhuFu = async function (cb) {

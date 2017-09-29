@@ -31,6 +31,7 @@ module.exports = function (client) {
             client.UserEvents[k] = new cmds[k](client);
             client.on(k, async function (...args) {
                 try {
+                    // let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js';
                     let main = this.UserEvents[k];
                     if (!main.before || await awaitDoErr(__filename, main, 'before', ...args) !== false) {
                         // main.do && await main.do(...args);
@@ -38,9 +39,7 @@ module.exports = function (client) {
                         await awaitDoErr(__filename, main, 'do', ...args);
                         await awaitDoErr(__filename, main, 'after', ...args);
                     }
-                } catch (e) {
-                    logError(__filename, k, e);
-                }
+                } catch (e) { }
             });
         }
     }

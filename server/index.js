@@ -21,7 +21,7 @@ global.awaitDoErr = function (filename, target, funcName, ...arg) {
                 });
             } else {
                 logSuccess(filename, funcName, parma, 'return');
-                resolve(parma.length === 1 ? parma[0] : parma);
+                resolve(parma.length <= 1 ? parma[0] : parma);
             }
         });
     });
@@ -41,7 +41,7 @@ global.awaitDo = function (filename, target, funcName, ...arg) {
         logSuccess(filename, funcName, arg, 'call');
         target[funcName](...arg, function (...parma) {
             logSuccess(filename, funcName, parma, 'return');
-            resolve(parma.length === 1 ? parma[0] : parma);
+            resolve(parma.length <= 1 ? parma[0] : parma);
         });
     });
 };

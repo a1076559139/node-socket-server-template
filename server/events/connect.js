@@ -6,16 +6,16 @@ var connect = function (client) {
     this.client = client;
 };
 
-connect.prototype.before = async function () {
+connect.prototype.before = async function (cb) {
     // console.log('before connect');
     // let query = this.client.handshake.query;
     // this.name = query.name;
+    cb(null);
 };
 
 connect.prototype.do = async function () {
     // let query = this.client.handshake.query;
-    console.log('connect', this.client.id);
-
+    logSuccess(__filename, 'do', this.client.id);
     // // 加入房间
     // this.client.join(query.room);
     // // 房间广播
