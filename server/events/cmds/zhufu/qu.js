@@ -6,6 +6,7 @@ var qu = function (client) {
     this.client = client;
 };
 
-qu.prototype.do = async function (fn) {
-    fn(await libs.db.zhuFu.getZhuFu());
+qu.prototype.do = async function (fn, cb) {
+    fn(await awaitDoErr(__filename, libs.db.zhuFu, 'getZhuFu'));
+    cb(null);
 };

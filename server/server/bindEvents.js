@@ -32,9 +32,11 @@ module.exports = function (client) {
             client.on(k, async function (...args) {
                 try {
                     let main = this.UserEvents[k];
-                    if (!main.before || await main.before(...args) !== false) {
-                        main.do && await main.do(...args);
-                        main.after && await main.after(...args);
+                    if (!main.before || await awaitDoErr(__filename, main, 'before', ...args) !== false) {
+                        // main.do && await main.do(...args);
+                        // main.after && await main.after(...args);
+                        await awaitDoErr(__filename, main, 'do', ...args);
+                        await awaitDoErr(__filename, main, 'after', ...args);
                     }
                 } catch (e) {
                     logError(__filename, k, e);

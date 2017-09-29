@@ -20,21 +20,22 @@ const texts = [
     { text: '中秋祝福：皓月闪烁，星光闪耀，中秋佳节，美满时刻！', name: '匿名' }
 ];
 
-db.putZhuFu = async function (data) {
+db.putZhuFu = async function (data, cb) {
     if (!type.String.isString(data)) {
-        return Promise.reject('参数错误');
+        return cb('参数错误');
     }
     await awaitDoErr(__filename, redis, 'rpush', redis_key, data);
+    cb(null);
 }
 
-db.getZhuFu = async function () {
+db.getZhuFu = async function (cb) {
     let length = await awaitDoErr(__filename, redis, 'llen', redis_key);
     let index = type.Number.random(0, texts.length - 1 + length);
     if (index < texts.length) {
-        return texts[index];
+        cb(null, texts[index]);
     } else {
         let string = await awaitDoErr(__filename, redis, 'lindex', redis_key, index - texts.length);
-        return JSON.parse(string);
+        cb(null, JSON.parse(string));
     }
 }
 
