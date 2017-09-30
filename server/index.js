@@ -56,6 +56,21 @@ global.sleep = function (time) {
     });
 };
 
+global.Log = function (msg, extra, level) {
+    if (typeof level !== 'number' || level < 1) {
+        level = 1;
+    }
+    let pathname = '';
+    try {
+        throw new Error();
+    } catch (e) {
+        let i = /\(.*:\d+:\d+/g;
+        pathname = e.stack.match(i)[level].slice(1);
+    }
+    extra = extra || 'log';
+    console.log('[OK]  [' + extra + ']  [' + pathname + ']  ' + JSON.stringify(msg));
+};
+
 global.logError = function (filename, funName, msg, extra) {
     msg = msg === undefined ? [] : msg;
     extra = extra || 'log';
