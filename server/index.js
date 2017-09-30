@@ -14,14 +14,15 @@ global.awaitDoErr = function (filename, target, funcName, ...arg) {
         logSuccess(filename, funcName, arg, 'call');
         target[funcName](...arg, function (err, ...parma) {
             if (err) {
-                logError(filename, funcName, err, 'return');
+                logError(filename, funcName, err, 'result');
                 reject({
                     code: 400,
                     message: err
                 });
             } else {
-                logSuccess(filename, funcName, parma, 'return');
-                resolve(parma.length <= 1 ? parma[0] : parma);
+                let result = parma.length <= 1 ? parma[0] : parma;
+                logSuccess(filename, funcName, result, 'result');
+                resolve(result);
             }
         });
     });
@@ -40,8 +41,9 @@ global.awaitDo = function (filename, target, funcName, ...arg) {
     return new Promise(function (resolve) {
         logSuccess(filename, funcName, arg, 'call');
         target[funcName](...arg, function (...parma) {
-            logSuccess(filename, funcName, parma, 'return');
-            resolve(parma.length <= 1 ? parma[0] : parma);
+            let result = parma.length <= 1 ? parma[0] : parma;
+            logSuccess(filename, funcName, result, 'result');
+            resolve(result);
         });
     });
 };
@@ -55,14 +57,18 @@ global.sleep = function (time) {
 };
 
 global.logError = function (filename, funName, msg, extra) {
-    let txt = extra ? '[ERROR] [' + extra + ']' : '[ERROR]';
-    console.error(txt + ' [' + filename + '] [' + funName + '] ' + JSON.stringify(msg));
-    console.log(txt + ' [' + filename + '] [' + funName + '] ' + JSON.stringify(msg));
+    msg = msg === undefined ? [] : msg;
+    extra = extra || 'log';
+    let txt = '[ERROR]  [' + extra + ']';
+    console.error(txt + '  [' + filename + ']  [' + funName + ']  ' + JSON.stringify(msg));
+    console.log(txt + '  [' + filename + ']  [' + funName + ']  ' + JSON.stringify(msg));
 };
 
 global.logSuccess = function (filename, funName, msg, extra) {
-    let txt = extra ? '[OK] [' + extra + ']' : '[OK]';
-    console.log(txt + ' [' + filename + '] [' + funName + '] ' + JSON.stringify(msg));
+    msg = msg === undefined ? [] : msg;
+    extra = extra || 'log';
+    let txt = '[OK]  [' + extra + ']';
+    console.log(txt + '  [' + filename + ']  [' + funName + ']  ' + JSON.stringify(msg));
 };
 
 global.config = require('./config');

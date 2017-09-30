@@ -6,11 +6,10 @@ var connect = function (client) {
     this.client = client;
 };
 
-connect.prototype.before = async function (cb) {
+connect.prototype.before = async function () {
     // console.log('before connect');
     // let query = this.client.handshake.query;
     // this.name = query.name;
-    cb(null);
 };
 
 connect.prototype.do = async function () {

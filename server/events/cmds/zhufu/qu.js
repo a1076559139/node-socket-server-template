@@ -7,5 +7,5 @@ var qu = function (client) {
 };
 
 qu.prototype.do = async function (fn) {
-    fn(await awaitDoErr(__filename, libs.db.zhuFu, 'getZhuFu'));
+    fn(await libs.db.zhuFu.getZhuFu());
 };

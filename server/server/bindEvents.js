@@ -29,17 +29,57 @@ module.exports = function (client) {
     for (let k in cmds) {
         if (!client.UserEvents[k]) {
             client.UserEvents[k] = new cmds[k](client);
+            let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js';
             client.on(k, async function (...args) {
-                try {
-                    // let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js';
-                    let main = this.UserEvents[k];
-                    if (!main.before || await awaitDoErr(__filename, main, 'before', ...args) !== false) {
-                        // main.do && await main.do(...args);
-                        // main.after && await main.after(...args);
-                        await awaitDoErr(__filename, main, 'do', ...args);
-                        await awaitDoErr(__filename, main, 'after', ...args);
+
+                if (typeof args[args.length - 1] === 'function') {
+                    let fn = args.splice(args.length - 1)[0];
+                    args.push(function (...args) {
+                        try {
+                            fn(...args);
+                            logSuccess(filename, 'response', args, 'response');
+                        } catch (e) {
+                            logError(filename, 'response', e.message || e, 'response');
+                            return Promise.reject(e.message || e);
+                        }
+                    });
+                }
+
+                let main = this.UserEvents[k];
+                if (main.before) {
+                    logSuccess(filename, 'before', args, 'call');
+                    try {
+                        let r = await main.before(...args);
+                        logSuccess(filename, 'before', r, 'result');
+                        if (r === false) {
+                            return;
+                        }
+                    } catch (e) {
+                        logError(filename, 'before', e.message || e, 'result');
+                        return Promise.reject(e.message || e);
                     }
-                } catch (e) { }
+                }
+                if (main.do) {
+                    logSuccess(filename, 'do', args, 'call');
+                    try {
+                        let r = await main.do(...args);
+                        logSuccess(filename, 'do', r, 'result');
+                    } catch (e) {
+                        logError(filename, 'do', e.message || e, 'result');
+                        return Promise.reject(e.message || e);
+                    }
+                }
+
+                if (main.after) {
+                    logSuccess(filename, 'after', args, 'call');
+                    try {
+                        let r = await main.after(...args);
+                        logSuccess(filename, 'after', r, 'result');
+                    } catch (e) {
+                        logError(filename, 'do', e.message || e, 'result');
+                        return Promise.reject(e.message || e);
+                    }
+                }
             });
         }
     }

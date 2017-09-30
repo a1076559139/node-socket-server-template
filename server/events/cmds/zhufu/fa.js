@@ -6,16 +6,16 @@ var fa = function (client) {
     this.client = client;
 };
 
-fa.prototype.before = async function (data, fn, cb) {
+fa.prototype.before = async function (data, fn) {
     console.log('fa data %j', data);
     if (!type.Object.isObject(data) || !data.name || !data.text) {
-        return cb(null, false);
+        return false;
     }
     if (!type.String.isString(data.name) || !type.String.isString(data.text)) {
-        return cb(null, false);
+        return false;
     }
     if (data.name.length > 10 || data.text.length > 200) {
-        return cb(null, false);
+        return false;
     }
 };
 
