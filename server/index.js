@@ -9,19 +9,19 @@ const fs = require('fs');
  * @param {any} arg
  * @returns
  */
-global.awaitDoErr = function (filename, target, funcName, ...arg) {
+global.awaitDoErr = function (target, funcName, ...arg) {
     return new Promise(function (resolve, reject) {
-        logSuccess(filename, funcName, arg, 'call');
+        let filename = logSuccess(arg, 'call', 2, funcName);
         target[funcName](...arg, function (err, ...parma) {
             if (err) {
-                logError(filename, funcName, err, 'result');
+                logError(err, 'result', filename, funcName);
                 reject({
                     code: 400,
                     message: err
                 });
             } else {
                 let result = parma.length <= 1 ? parma[0] : parma;
-                logSuccess(filename, funcName, result, 'result');
+                logSuccess(result, 'result', filename, funcName);
                 resolve(result);
             }
         });
@@ -37,12 +37,12 @@ global.awaitDoErr = function (filename, target, funcName, ...arg) {
  * @param {any} arg
  * @returns
  */
-global.awaitDo = function (filename, target, funcName, ...arg) {
+global.awaitDo = function (target, funcName, ...arg) {
     return new Promise(function (resolve) {
-        logSuccess(filename, funcName, arg, 'call');
+        let filename = logSuccess(arg, 'call', 2, funcName);
         target[funcName](...arg, function (...parma) {
             let result = parma.length <= 1 ? parma[0] : parma;
-            logSuccess(filename, funcName, result, 'result');
+            logSuccess(result, 'result', filename, funcName);
             resolve(result);
         });
     });
@@ -56,34 +56,50 @@ global.sleep = function (time) {
     });
 };
 
-global.Log = function (msg, extra, level) {
+const log = console.log;
+const error = console.error;
+
+global.logError = console.error = function (msg, extra, level, funName) {
+    msg = msg === undefined ? [] : msg;
+
     let pathname = '';
-    let i = '/\\(.*:\\d+:\\d+/g';
     if (typeof level === 'string') {
-        i = '/' + level + '.*:\\d+:\\d+/';
-        level = 0;
-    } else if (typeof level !== 'number' || level < 1) {
-        level = 1;
+        pathname = level;
+    } else {
+        if (typeof level !== 'number' || level < 1) {
+            level = 1;
+        }
+        let i = /\(.*:\d+:\d+/g;
+        let e = new Error();
+        pathname = e.stack.match(i)[level].slice(1);
     }
-    let e = new Error();
-    pathname = e.stack.match(eval(i))[level].slice(1);
+
     extra = extra || 'log';
-    console.log('[OK]  [' + extra + ']  [' + pathname + ']  ' + JSON.stringify(msg));
+    // error.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + JSON.stringify(msg));
+    log.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + JSON.stringify(msg));
+
+    return pathname;
 };
 
-global.logError = function (filename, funName, msg, extra) {
+global.logSuccess = console.log = function (msg, extra, level, funName) {
     msg = msg === undefined ? [] : msg;
-    extra = extra || 'log';
-    let txt = '[ERROR]  [' + extra + ']';
-    console.error(txt + '  [' + filename + ']  [' + funName + ']  ' + JSON.stringify(msg));
-    console.log(txt + '  [' + filename + ']  [' + funName + ']  ' + JSON.stringify(msg));
-};
 
-global.logSuccess = function (filename, funName, msg, extra) {
-    msg = msg === undefined ? [] : msg;
+    let pathname = '';
+    if (typeof level === 'string') {
+        pathname = level;
+    } else {
+        if (typeof level !== 'number' || level < 1) {
+            level = 1;
+        }
+        let i = /\(.*:\d+:\d+/g;
+        let e = new Error();
+        pathname = e.stack.match(i)[level].slice(1);
+    }
+
     extra = extra || 'log';
-    let txt = '[OK]  [' + extra + ']';
-    console.log(txt + '  [' + filename + ']  [' + funName + ']  ' + JSON.stringify(msg));
+    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'log') + ']  ' + JSON.stringify(msg));
+
+    return pathname;
 };
 
 global.config = require('./config');
@@ -92,10 +108,10 @@ global.util = require('./util/util');
 global.intersection = require('./util/intersection');
 
 global.io = require('./server');
-console.log('server start');
+logSuccess('server start');
 
 process.on('uncaughtException', function (err) {
-    console.log('uncaughtException', err.stack);
+    logError('uncaughtException', err.stack);
 });
 
 //libs库设为全局

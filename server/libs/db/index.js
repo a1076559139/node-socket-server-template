@@ -14,13 +14,13 @@ for (let i = 0; i < files_cmds.length; i++) {
         if (typeof o === 'function') {
             let filename = __dirname + '\\cmds\\' + file + '.js';
             db[file] = async function (...args) {
-                logSuccess(filename, file, args, 'call');
+                logSuccess(args, 'call', filename, file);
                 try {
                     let r = await o(args);
-                    logSuccess(filename, file, r, 'result');
+                    logSuccess(r, 'result', filename, file);
                     return r;
                 } catch (e) {
-                    logError(filename, k, e, 'result');
+                    logError(e, 'result', filename, k);
                     return Promise.reject(e);
                 }
             };
@@ -29,13 +29,13 @@ for (let i = 0; i < files_cmds.length; i++) {
             let filename = __dirname + '\\cmds\\' + file + '.js';
             for (let k in o) {
                 db[file][k] = async function (...args) {
-                    logSuccess(filename, k, args, 'call');
+                    logSuccess(args, 'call', filename, k);
                     try {
                         let r = await o[k](args);
-                        logSuccess(filename, k, r, 'result');
+                        logSuccess(r, 'result', filename, k);
                         return r;
                     } catch (e) {
-                        logError(filename, k, e, 'result');
+                        logError(e, 'result', filename, k);
                         return Promise.reject(e);
                     }
                 };

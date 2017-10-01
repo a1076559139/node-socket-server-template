@@ -14,17 +14,19 @@ connect.prototype.before = async function () {
 
 connect.prototype.do = async function () {
     // let query = this.client.handshake.query;
-    logSuccess(__filename, 'do', this.client.id);
     // // 加入房间
+    console.log('取祝福');
+    let r = await libs.db.zhuFu.getZhuFu();
+    console.log('祝福 ' + JSON.stringify(r));
     // this.client.join(query.room);
     // // 房间广播
     // this.client.to(query.room).broadcast.emit('ll', this.client.id);
     // // 存储用户数据
     // this.client.setUserData('room', query.room);
-    let f = function (dt) {
-        console.log('dt', dt);
-    }
-    let id = this.client.schedule(f, 2000);
+    // let f = function (dt) {
+    //     console.log('dt', dt);
+    // }
+    // let id = this.client.schedule(f, 2000);
     // this.client.unschedule(id);
     // this.client.unschedule(f);
 };

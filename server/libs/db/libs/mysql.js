@@ -1,9 +1,9 @@
 // const _Mysql = require('mysql');
 // const crc32 = require('crc-32');
 // const type = require('type-util');
-// // const host = '123.206.73.243';
-// // const user = 'root';
-// // const password = 'alibaba';
+// // const host = '';
+// // const user = '';
+// // const password = '';
 
 // const all = config.mysql_config.database * config.mysql_config.table;
 

@@ -2,7 +2,6 @@ const config = require('./../config');
 const Redis = require('redis');
 //     client = redis.createClient({
 //         //ip地址localhost
-//         //139.199.210.29
 //         host: 'localhost',
 //         //端口6379
 //         port: 6379,

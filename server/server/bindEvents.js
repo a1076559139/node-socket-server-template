@@ -15,7 +15,7 @@ function readdirSync(path) {
                     throw Error('./../' + validPath + ' is not function');
                 }
             } catch (e) {
-                logError(__filename, 'readdirSync', e.message + ' in ./../' + validPath);
+                logError(e.message + ' in ./../' + validPath, 'engine', __filename, 'readdirSync');
             }
         } else {
             readdirSync(validPath);
@@ -37,9 +37,9 @@ module.exports = function (client) {
                     args.push(function (...args) {
                         try {
                             fn(...args);
-                            logSuccess(filename, 'response', args, 'response');
+                            logSuccess(args, 'response', filename, 'response');
                         } catch (e) {
-                            logError(filename, 'response', e.message || e, 'response');
+                            logError(e.message || e, 'response', filename, 'response');
                             return Promise.reject(e.message || e);
                         }
                     });
@@ -47,36 +47,36 @@ module.exports = function (client) {
 
                 let main = this.UserEvents[k];
                 if (main.before) {
-                    logSuccess(filename, 'before', args, 'call');
+                    logSuccess(args, 'call', filename, 'before');
                     try {
                         let r = await main.before(...args);
-                        logSuccess(filename, 'before', r, 'result');
+                        logSuccess(r, 'result', filename, 'before');
                         if (r === false) {
                             return;
                         }
                     } catch (e) {
-                        logError(filename, 'before', e.message || e, 'result');
+                        logError(e.message || e, 'result', filename, 'before');
                         return Promise.reject(e.message || e);
                     }
                 }
                 if (main.do) {
-                    logSuccess(filename, 'do', args, 'call');
+                    logSuccess(args, 'call', filename, 'do');
                     try {
                         let r = await main.do(...args);
-                        logSuccess(filename, 'do', r, 'result');
+                        logSuccess(r, 'result', filename, 'do');
                     } catch (e) {
-                        logError(filename, 'do', e.message || e, 'result');
+                        logError(e.message || e, 'result', filename, 'do');
                         return Promise.reject(e.message || e);
                     }
                 }
 
                 if (main.after) {
-                    logSuccess(filename, 'after', args, 'call');
+                    logSuccess(args, 'call', filename, 'after');
                     try {
                         let r = await main.after(...args);
-                        logSuccess(filename, 'after', r, 'result');
+                        logSuccess(r, 'result', filename, 'after');
                     } catch (e) {
-                        logError(filename, 'do', e.message || e, 'result');
+                        logError(e.message || e, 'result', filename, 'do');
                         return Promise.reject(e.message || e);
                     }
                 }

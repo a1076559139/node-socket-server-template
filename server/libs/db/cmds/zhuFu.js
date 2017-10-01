@@ -24,16 +24,16 @@ db.putZhuFu = async function (data) {
     if (!type.String.isString(data)) {
         throw ('参数错误');
     }
-    await awaitDoErr(__filename, redis, 'rpush', redis_key, data);
+    await awaitDoErr(redis, 'rpush', redis_key, data);
 }
 
 db.getZhuFu = async function () {
-    let length = await awaitDoErr(__filename, redis, 'llen', redis_key);
+    let length = await awaitDoErr(redis, 'llen', redis_key);
     let index = type.Number.random(0, texts.length - 1 + length);
     if (index < texts.length) {
         return texts[index];
     } else {
-        let string = await awaitDoErr(__filename, redis, 'lindex', redis_key, index - texts.length);
+        let string = await awaitDoErr(redis, 'lindex', redis_key, index - texts.length);
         return JSON.parse(string)
     }
 }
