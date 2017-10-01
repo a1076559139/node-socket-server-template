@@ -104,16 +104,16 @@ module.exports = function (client) {
         }
         delay = isNaN(delay) ? 0 : delay;
 
-        let id = this._schedulesId;
+        if (!callback._scheduleId) {
+            callback._scheduleId = this._schedulesId;
+            this._schedulesId = this._schedulesId >= 10E7 ? 1 : this._schedulesId + 1;
+        }
+        let id = callback._scheduleId;
 
-        callback._scheduleId = id;
-
-        this._schedules[id] = setTimeout(function (id, d) {
-            let time = Date.now();
-            callback.call(this, time - d, time);
-        }.bind(this, id, Date.now()), delay);
-
-        this._schedulesId = this._schedulesId >= 10E7 ? 1 : this._schedulesId + 1;
+        this._schedules[id] = setTimeout(function (id, time, delay) {
+            delete callback._scheduleId;
+            callback.call(this, Date.now() - time, delay);
+        }.bind(this, id, Date.now(), delay), delay);
         return id;
     };
     client.schedule = function (callback, interval, repeat, delay) {
@@ -124,13 +124,16 @@ module.exports = function (client) {
         repeat = isNaN(repeat) ? -1 : repeat;
         delay = isNaN(delay) ? 0 : delay;
 
-        callback._scheduleId = this.scheduleOnce(function fn(dt, time) {
+        callback._scheduleId = this.scheduleOnce(function fn(dt, delay) {
+            fn._scheduleId = callback._scheduleId;
             if (repeat < 0 || repeat > 0) {
                 repeat > 0 && --repeat;
-                callback._scheduleId = this.scheduleOnce(fn, interval);
+                this.scheduleOnce(fn, interval - dt + delay);
             }
-            callback.call(this, dt, time);
+            callback.call(this, dt, delay);
         }, delay);
+
+        return callback._scheduleId;
     };
     client.unschedule = function (parma) {
         if (!parma) {
@@ -138,15 +141,18 @@ module.exports = function (client) {
             return;
         }
         let id = parma._scheduleId || parma;
-        clearTimeout(this._schedules[id]);
-        delete this._schedules[id];
+        if (id) {
+            this._schedules[id].close();
+            delete this._schedules[id];
+        }
     };
     client.unscheduleAllCallbacks = function () {
         for (let id in this._schedules) {
             this.unschedule(id);
         }
     };
-    client.on('disconnect', function () {
+    client.on && client.on('disconnect', function () {
         this.unscheduleAllCallbacks();
     });
+    return client;
 };

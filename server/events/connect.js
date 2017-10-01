@@ -21,10 +21,12 @@ connect.prototype.do = async function () {
     // this.client.to(query.room).broadcast.emit('ll', this.client.id);
     // // 存储用户数据
     // this.client.setUserData('room', query.room);
-
-    // this.client.schedule(function (dt) {
-    //     this.emit('shouZhuFu', { text: '我是测试文字啦啦啦', name: 'zp' });
-    // }, 2000);
+    let f = function (dt) {
+        console.log('dt', dt);
+    }
+    let id = this.client.schedule(f, 2000);
+    // this.client.unschedule(id);
+    // this.client.unschedule(f);
 };
 
 connect.prototype.after = async function () {

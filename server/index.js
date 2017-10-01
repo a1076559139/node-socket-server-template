@@ -57,16 +57,16 @@ global.sleep = function (time) {
 };
 
 global.Log = function (msg, extra, level) {
-    if (typeof level !== 'number' || level < 1) {
+    let pathname = '';
+    let i = '/\\(.*:\\d+:\\d+/g';
+    if (typeof level === 'string') {
+        i = '/' + level + '.*:\\d+:\\d+/';
+        level = 0;
+    } else if (typeof level !== 'number' || level < 1) {
         level = 1;
     }
-    let pathname = '';
-    try {
-        throw new Error();
-    } catch (e) {
-        let i = /\(.*:\d+:\d+/g;
-        pathname = e.stack.match(i)[level].slice(1);
-    }
+    let e = new Error();
+    pathname = e.stack.match(eval(i))[level].slice(1);
     extra = extra || 'log';
     console.log('[OK]  [' + extra + ']  [' + pathname + ']  ' + JSON.stringify(msg));
 };
