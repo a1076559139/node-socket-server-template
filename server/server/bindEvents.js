@@ -40,7 +40,7 @@ module.exports = function (client) {
                             logSuccess(args, 'resp', 1, 'resp');
                         } catch (e) {
                             logError(e.message || e, 'resp', 1, 'resp');
-                            return Promise.reject(e.message || e);
+                            // return Promise.reject(e.message || e);
                         }
                     });
                 }
@@ -56,7 +56,8 @@ module.exports = function (client) {
                         }
                     } catch (e) {
                         logError(e.message || e, 'rest', e, 'before');
-                        return Promise.reject(e.message || e);
+                        // return Promise.reject(e.message || e);
+                        return;
                     }
                 }
                 if (main.do) {
@@ -66,7 +67,8 @@ module.exports = function (client) {
                         logSuccess(r, 'rest', filename, 'do');
                     } catch (e) {
                         logError(e.message || e, 'rest', e, 'do');
-                        return Promise.reject(e.message || e);
+                        // return Promise.reject(e.message || e);
+                        return;
                     }
                 }
 
@@ -77,7 +79,8 @@ module.exports = function (client) {
                         logSuccess(r, 'rest', filename, 'after');
                     } catch (e) {
                         logError(e.message || e, 'rest', e, 'do');
-                        return Promise.reject(e.message || e);
+                        // return Promise.reject(e.message || e);
+                        return;
                     }
                 }
             });

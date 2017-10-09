@@ -9,7 +9,8 @@ var array = {
      * @returns {Boolean}
      */
     isArray: function (param) {
-        return typeof param === 'object' && param !== null && typeof param.length !== 'undefined';
+        return Object.prototype.toString.call(param) === '[object Array]';
+        // return typeof param === 'object' && param !== null && typeof param.length !== 'undefined';
     },
     /**
      * 将参数强转成数组格式,不带有length属性将返回null
@@ -38,7 +39,7 @@ var array = {
      * @returns {Boolean}
      */
     isStringArray: function (param) {
-        if (param instanceof Array && param.length > 0) {
+        if (this.isArray(param) && param.length > 0) {
             for (var i = 0; i < param.length; i++) {
                 if (!string.isString(param[i])) {
                     return false;
@@ -56,7 +57,7 @@ var array = {
      * @returns {Boolean}
      */
     isNumberArray: function (param, judge) {
-        if (param instanceof Array && param.length > 0) {
+        if (this.isArray(param) && param.length > 0) {
             for (var i = 0; i < param.length; i++) {
                 if (!number.isNumber(param[i], judge)) {
                     return false;

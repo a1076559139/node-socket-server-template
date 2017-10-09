@@ -60,7 +60,7 @@ const log = console.log;
 const error = console.error;
 
 global.logError = console.error = function (msg, extra, level, funName) {
-    msg = msg === undefined ? [] : msg;
+    // msg = msg === undefined ? [] : msg;
 
     let pathname = '';
     if (typeof level === 'string') {
@@ -89,7 +89,7 @@ global.logError = console.error = function (msg, extra, level, funName) {
 };
 
 global.logSuccess = console.log = function (msg, extra, level, funName) {
-    msg = msg === undefined ? [] : msg;
+    // msg = msg === undefined ? [] : msg;
 
     let pathname = '';
     if (typeof level === 'string') {
