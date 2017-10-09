@@ -40,7 +40,7 @@ module.exports = function (client) {
                             logSuccess(args, 'resp', 1, 'resp');
                         } catch (e) {
                             logError(e.message || e, 'resp', 1, 'resp');
-                            return Promise.reject(e.message || e);
+                            return Promise.reject(e);
                         }
                     });
                 }
