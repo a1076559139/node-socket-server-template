@@ -1,5 +1,5 @@
-module.exports = function (app) {
-    return new error(app);
+module.exports = function (client) {
+    return new error(client);
 };
 /**
  * @param {SocketIO.Socket} client 

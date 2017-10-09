@@ -1,5 +1,5 @@
-module.exports = function (app) {
-    return new disconnect(app);
+module.exports = function (client) {
+    return new disconnect(client);
 };
 /**
  * @param {SocketIO.Socket} client 
