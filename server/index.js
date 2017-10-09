@@ -97,7 +97,7 @@ global.logSuccess = console.log = function (msg, extra, level, funName) {
     }
 
     extra = extra || 'logs';
-    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'logs') + ']  ' + JSON.stringify(msg));
+    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'log') + ']  ' + JSON.stringify(msg));
 
     return pathname;
 };
