@@ -17,9 +17,7 @@ connect.prototype.before = async function () {
 connect.prototype.do = async function () {
     // let query = this.client.handshake.query;
     // // 加入房间
-    // console.log('取祝福');
-    let r = await libs.db.zhuFu.getZhuFu();
-    // console.log('祝福 ' + JSON.stringify(r));
+
     // this.client.join(query.room);
     // // 房间广播
     // this.client.to(query.room).broadcast.emit('ll', this.client.id);

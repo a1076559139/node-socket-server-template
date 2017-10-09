@@ -29,7 +29,7 @@ module.exports = function (client) {
     for (let k in cmds) {
         if (!client.UserEvents[k]) {
             client.UserEvents[k] = new cmds[k](client);
-            let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js:1:0';
+            let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js:1:1';
             client.on(k, async function (...args) {
 
                 if (typeof args[args.length - 1] === 'function') {
@@ -37,9 +37,9 @@ module.exports = function (client) {
                     args.push(function (...args) {
                         try {
                             fn(...args);
-                            logSuccess(args, 'resp', filename, 'resp');
+                            logSuccess(args, 'resp', 1, 'resp');
                         } catch (e) {
-                            logError(e.message || e, 'resp', filename, 'resp');
+                            logError(e.message || e, 'resp', 1, 'resp');
                             return Promise.reject(e.message || e);
                         }
                     });
@@ -55,7 +55,7 @@ module.exports = function (client) {
                             return;
                         }
                     } catch (e) {
-                        logError(e.message || e, 'rest', filename, 'before');
+                        logError(e.message || e, 'rest', e, 'before');
                         return Promise.reject(e.message || e);
                     }
                 }
@@ -65,7 +65,7 @@ module.exports = function (client) {
                         let r = await main.do(...args);
                         logSuccess(r, 'rest', filename, 'do');
                     } catch (e) {
-                        logError(e.message || e, 'rest', filename, 'do');
+                        logError(e.message || e, 'rest', e, 'do');
                         return Promise.reject(e.message || e);
                     }
                 }
@@ -76,7 +76,7 @@ module.exports = function (client) {
                         let r = await main.after(...args);
                         logSuccess(r, 'rest', filename, 'after');
                     } catch (e) {
-                        logError(e.message || e, 'rest', filename, 'do');
+                        logError(e.message || e, 'rest', e, 'do');
                         return Promise.reject(e.message || e);
                     }
                 }

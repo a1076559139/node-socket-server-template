@@ -66,11 +66,18 @@ global.logError = console.error = function (msg, extra, level, funName) {
     if (typeof level === 'string') {
         pathname = level;
     } else {
-        if (typeof level !== 'number' || level < 1) {
-            level = 1;
-        }
         let i = /\(.*:\d+:\d+/g;
-        let e = new Error();
+        let e = null;
+        if (level instanceof Error) {
+            e = level;
+            level = 0;
+        } else {
+            e = new Error();
+            if (typeof level !== 'number' || level < 1) {
+                level = 1;
+            }
+        }
+
         pathname = e.stack.match(i)[level].slice(1);
     }
 
@@ -88,11 +95,18 @@ global.logSuccess = console.log = function (msg, extra, level, funName) {
     if (typeof level === 'string') {
         pathname = level;
     } else {
-        if (typeof level !== 'number' || level < 1) {
-            level = 1;
-        }
         let i = /\(.*:\d+:\d+/g;
-        let e = new Error();
+        let e = null;
+        if (level instanceof Error) {
+            e = level;
+            level = 0;
+        } else {
+            e = new Error();
+            if (typeof level !== 'number' || level < 1) {
+                level = 1;
+            }
+        }
+
         pathname = e.stack.match(i)[level].slice(1);
     }
 

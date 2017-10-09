@@ -1,6 +1,7 @@
 <script src="./socket.io.js"></script>
 <script>
     var socket = new io('http://127.0.0.1:30000?name=xiaoming&room=b', { path: '/game' });
-    // socket.emit('cmds.main.buy', function (d) { console.log(d) });
+    socket.emit('cmds.zhufu.qu', function (d) { console.log(d) });
     socket.on('say', function (d) { console.log(d) });
+
 </script>
