@@ -83,7 +83,7 @@ global.logError = console.error = function (msg, extra, level, funName) {
 
     extra = extra || 'logs';
     // error.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + JSON.stringify(msg));
-    log.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + (typeof msg === 'object' ? JSON.stringify(msg) : msg));
+    log.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + JSON.stringify(msg));
 
     return pathname;
 };
@@ -111,7 +111,7 @@ global.logSuccess = console.log = function (msg, extra, level, funName) {
     }
 
     extra = extra || 'logs';
-    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'log') + ']  ' + (typeof msg === 'object' ? JSON.stringify(msg) : msg));
+    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'log') + ']  ' + JSON.stringify(msg));
 
     return pathname;
 };
