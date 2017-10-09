@@ -1,7 +1,9 @@
 module.exports = function (app) {
     return new fa(app);
 };
-
+/**
+ * @param {SocketIO.Socket} client 
+ */
 var fa = function (client) {
     this.client = client;
 };

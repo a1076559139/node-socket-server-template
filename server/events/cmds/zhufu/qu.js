@@ -1,7 +1,9 @@
 module.exports = function (app) {
     return new qu(app);
 };
-
+/**
+ * @param {SocketIO.Socket} client 
+ */
 var qu = function (client) {
     this.client = client;
 };
