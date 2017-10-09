@@ -48,7 +48,7 @@ global.awaitDo = function (target, funcName, ...arg) {
     });
 };
 
-global.sleep = function (time) {
+global.delay = function (time) {
     return new Promise(function (resolve) {
         setTimeout(function () {
             resolve();
