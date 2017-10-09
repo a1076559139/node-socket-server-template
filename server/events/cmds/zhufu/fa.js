@@ -20,5 +20,5 @@ fa.prototype.before = async function (data, fn) {
 
 fa.prototype.do = async function (data, fn) {
     this.client.broadcast.emit('shouZhuFu', data);
-    await awaitDoErr( libs.db.zhuFu, 'putZhuFu', JSON.stringify(data));
+    await libs.db.zhuFu.putZhuFu(JSON.stringify(data));
 };

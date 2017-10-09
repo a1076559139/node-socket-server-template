@@ -12,30 +12,30 @@ for (let i = 0; i < files_cmds.length; i++) {
         }
         let o = require('./cmds/' + file);
         if (typeof o === 'function') {
-            let filename = __dirname + '\\cmds\\' + file + '.js';
+            // let filename = __dirname + '\\cmds\\' + file + '.js';
             db[file] = async function (...args) {
-                logSuccess(args, 'call', filename, file);
+                let filename = logSuccess(args, 'call', 2, file);
                 try {
                     let r = await o(args);
-                    logSuccess(r, 'result', filename, file);
+                    logSuccess(r, 'rest', filename, file);
                     return r;
                 } catch (e) {
-                    logError(e, 'result', filename, k);
+                    logError(e, 'rest', filename, k);
                     return Promise.reject(e);
                 }
             };
         } else {
             db[file] = {};
-            let filename = __dirname + '\\cmds\\' + file + '.js';
+            // let filename = __dirname + '\\cmds\\' + file + '.js';
             for (let k in o) {
                 db[file][k] = async function (...args) {
-                    logSuccess(args, 'call', filename, k);
+                    let filename = logSuccess(args, 'call', 2, k);
                     try {
                         let r = await o[k](args);
-                        logSuccess(r, 'result', filename, k);
+                        logSuccess(r, 'rest', filename, k);
                         return r;
                     } catch (e) {
-                        logError(e, 'result', filename, k);
+                        logError(e, 'rest', filename, k);
                         return Promise.reject(e);
                     }
                 };

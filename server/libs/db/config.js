@@ -6,7 +6,7 @@ module.exports = {
         port: 9999,
         //0库
         db: 0,
-        password: ''
+        // password: ''
         //超时时间10秒,10秒后redis不会自动重连
         // connect_timeout: 10000
     }

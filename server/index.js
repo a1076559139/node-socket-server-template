@@ -14,14 +14,14 @@ global.awaitDoErr = function (target, funcName, ...arg) {
         let filename = logSuccess(arg, 'call', 2, funcName);
         target[funcName](...arg, function (err, ...parma) {
             if (err) {
-                logError(err, 'result', filename, funcName);
+                logError(err, 'rest', filename, funcName);
                 reject({
                     code: 400,
                     message: err
                 });
             } else {
                 let result = parma.length <= 1 ? parma[0] : parma;
-                logSuccess(result, 'result', filename, funcName);
+                logSuccess(result, 'rest', filename, funcName);
                 resolve(result);
             }
         });
@@ -42,7 +42,7 @@ global.awaitDo = function (target, funcName, ...arg) {
         let filename = logSuccess(arg, 'call', 2, funcName);
         target[funcName](...arg, function (...parma) {
             let result = parma.length <= 1 ? parma[0] : parma;
-            logSuccess(result, 'result', filename, funcName);
+            logSuccess(result, 'rest', filename, funcName);
             resolve(result);
         });
     });
@@ -74,7 +74,7 @@ global.logError = console.error = function (msg, extra, level, funName) {
         pathname = e.stack.match(i)[level].slice(1);
     }
 
-    extra = extra || 'log';
+    extra = extra || 'logs';
     // error.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + JSON.stringify(msg));
     log.call(console, '[ERROR]  [' + extra + ']  [' + pathname + ':' + (funName || 'error') + ']  ' + JSON.stringify(msg));
 
@@ -96,8 +96,8 @@ global.logSuccess = console.log = function (msg, extra, level, funName) {
         pathname = e.stack.match(i)[level].slice(1);
     }
 
-    extra = extra || 'log';
-    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'log') + ']  ' + JSON.stringify(msg));
+    extra = extra || 'logs';
+    log.call(console, '[OK]  [' + extra + ']  [' + pathname + ':' + (funName || 'logs') + ']  ' + JSON.stringify(msg));
 
     return pathname;
 };

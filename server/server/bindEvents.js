@@ -29,7 +29,7 @@ module.exports = function (client) {
     for (let k in cmds) {
         if (!client.UserEvents[k]) {
             client.UserEvents[k] = new cmds[k](client);
-            let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js';
+            let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js:1:0';
             client.on(k, async function (...args) {
 
                 if (typeof args[args.length - 1] === 'function') {
@@ -37,9 +37,9 @@ module.exports = function (client) {
                     args.push(function (...args) {
                         try {
                             fn(...args);
-                            logSuccess(args, 'response', filename, 'response');
+                            logSuccess(args, 'resp', filename, 'resp');
                         } catch (e) {
-                            logError(e.message || e, 'response', filename, 'response');
+                            logError(e.message || e, 'resp', filename, 'resp');
                             return Promise.reject(e.message || e);
                         }
                     });
@@ -50,12 +50,12 @@ module.exports = function (client) {
                     logSuccess(args, 'call', filename, 'before');
                     try {
                         let r = await main.before(...args);
-                        logSuccess(r, 'result', filename, 'before');
+                        logSuccess(r, 'rest', filename, 'before');
                         if (r === false) {
                             return;
                         }
                     } catch (e) {
-                        logError(e.message || e, 'result', filename, 'before');
+                        logError(e.message || e, 'rest', filename, 'before');
                         return Promise.reject(e.message || e);
                     }
                 }
@@ -63,9 +63,9 @@ module.exports = function (client) {
                     logSuccess(args, 'call', filename, 'do');
                     try {
                         let r = await main.do(...args);
-                        logSuccess(r, 'result', filename, 'do');
+                        logSuccess(r, 'rest', filename, 'do');
                     } catch (e) {
-                        logError(e.message || e, 'result', filename, 'do');
+                        logError(e.message || e, 'rest', filename, 'do');
                         return Promise.reject(e.message || e);
                     }
                 }
@@ -74,9 +74,9 @@ module.exports = function (client) {
                     logSuccess(args, 'call', filename, 'after');
                     try {
                         let r = await main.after(...args);
-                        logSuccess(r, 'result', filename, 'after');
+                        logSuccess(r, 'rest', filename, 'after');
                     } catch (e) {
-                        logError(e.message || e, 'result', filename, 'do');
+                        logError(e.message || e, 'rest', filename, 'do');
                         return Promise.reject(e.message || e);
                     }
                 }
