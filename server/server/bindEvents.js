@@ -32,7 +32,6 @@ module.exports = function (client) {
             let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js:1:1';
             client.on(k, async function (...args) {
 
-                let msg = null;
                 if (typeof args[args.length - 1] === 'function') {
                     let fn = args.splice(args.length - 1)[0];
                     args.push(function (...args) {
@@ -44,16 +43,12 @@ module.exports = function (client) {
                             return Promise.reject(e);
                         }
                     });
-                    let arr = args.slice(0, args.length - 1);
-                    arr.push('function');
-                    msg = '[' + arr.toString() + ']';
-                } else {
-                    msg = '[' + args.toString() + ']';
+
                 }
 
                 let main = this.UserEvents[k];
                 if (main.before) {
-                    logSuccess(msg, 'call', filename, 'before');
+                    logSuccess(args, 'call', filename, 'before');
                     try {
                         let r = await main.before(...args);
                         logSuccess(r, 'rest', filename, 'before');
@@ -67,7 +62,7 @@ module.exports = function (client) {
                     }
                 }
                 if (main.do) {
-                    logSuccess(msg, 'call', filename, 'do');
+                    logSuccess(args, 'call', filename, 'do');
                     try {
                         let r = await main.do(...args);
                         logSuccess(r, 'rest', filename, 'do');
@@ -79,7 +74,7 @@ module.exports = function (client) {
                 }
 
                 if (main.after) {
-                    logSuccess(msg, 'call', filename, 'after');
+                    logSuccess(args, 'call', filename, 'after');
                     try {
                         let r = await main.after(...args);
                         logSuccess(r, 'rest', filename, 'after');

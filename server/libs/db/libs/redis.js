@@ -16,7 +16,7 @@ redis.on('connect', function () {
     console.log('redis content success');
 });
 redis.on('error', function (err) {
-    console.log('redis content err %j', err);
+    console.error('redis content err ' + err);
 });
 
 module.exports.getClient = function () {

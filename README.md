@@ -21,7 +21,24 @@ qu.prototype.do = async function (fn) {
 };
 这种情况下，fn执行的时候还会打印一条[resp]日志
 ```
-
+```
+[OK]  [logs]  [f:\a1076559139\node-socket-server-template\server\index.js:125:1:log]  "server start"
+[ERROR]  [logs]  [f:\a1076559139\node-socket-server-template\server\libs\db\libs\redis.js:19:13:error]  "redis content err Error: Redis connection to 127.0.0.1:9999 failed - connect ECONNREFUSED 127.0.0.1:9999"
+[OK]  [logs]  [f:\a1076559139\node-socket-server-template\server\libs\db\libs\redis.js:16:13:log]  "redis content success"
+[OK]  [call]  [f:\a1076559139\node-socket-server-template\server\events\connect.js:1:1:before]  []
+[OK]  [rest]  [f:\a1076559139\node-socket-server-template\server\events\connect.js:1:1:before]  ""
+[OK]  [call]  [f:\a1076559139\node-socket-server-template\server\events\connect.js:1:1:do]  []
+[OK]  [rest]  [f:\a1076559139\node-socket-server-template\server\events\connect.js:1:1:do]  ""
+[OK]  [call]  [f:\a1076559139\node-socket-server-template\server\events\connect.js:1:1:after]  []
+[OK]  [rest]  [f:\a1076559139\node-socket-server-template\server\events\connect.js:1:1:after]  ""
+[OK]  [call]  [f:\a1076559139\node-socket-server-template\server\events\cmds\zhufu\qu.js:1:1:do]  [null]
+[OK]  [call]  [f:\a1076559139\node-socket-server-template\server\events\cmds\zhufu\qu.js:12:28:getZhuFu]  []
+[OK]  [call]  [f:\a1076559139\node-socket-server-template\server\libs\db\cmds\zhuFu.js:31:24:llen]  ["zhufu"]
+[OK]  [rest]  [f:\a1076559139\node-socket-server-template\server\libs\db\cmds\zhuFu.js:31:24:llen]  0
+[OK]  [rest]  [f:\a1076559139\node-socket-server-template\server\events\cmds\zhufu\qu.js:12:28:getZhuFu]  {"text":"中秋祝福：皓月闪烁，星光闪耀，中秋佳节，美满时刻！","name":"匿名"}
+[OK]  [resp]  [f:\a1076559139\node-socket-server-template\server\events\cmds\zhufu\qu.js:12:5:resp]  [{"text":"中秋祝福：皓月闪烁，星光闪耀，中秋佳节，美满时刻！","name":"匿名"}]
+[OK]  [rest]  [f:\a1076559139\node-socket-server-template\server\events\cmds\zhufu\qu.js:1:1:do]  ""
+```
 # CLIENT中
 ```
 目录：events/cmds/zhufu/fa.js
