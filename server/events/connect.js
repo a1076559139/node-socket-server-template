@@ -22,7 +22,10 @@ connect.prototype.do = async function () {
     // this.client.to(this.query.room).broadcast.emit('ll', this.client.id);
 
     // // 存储用户数据
-    // this.client.setUserData('data', '123456');
+    // this.client.setData('data', '123456');
+
+    // // 存储全局数据
+    // io.setData('data', '123456');
 
     // // 开关用户定时器
     // let f = function (dt) {
@@ -42,6 +45,9 @@ connect.prototype.do = async function () {
 };
 
 connect.prototype.after = async function () {
-    // 读取用户数据
-    // let room = this.client.getUserData('data');
+    // // 读取用户数据
+    // let room = this.client.getData('data');
+
+    // // 读取全局数据
+    // let room = io.getData('data');
 };

@@ -31,7 +31,7 @@ module.exports = function (client) {
             client.UserEvents[k] = new cmds[k](client);
             let filename = __dirname.slice(0, __dirname.length - 6) + 'events\\' + k.replace(/\./g, '\\') + '.js:1:1';
             client.on(k, async function (...args) {
-
+                
                 if (typeof args[args.length - 1] === 'function') {
                     let fn = args.splice(args.length - 1)[0];
                     args.push(function (...args) {

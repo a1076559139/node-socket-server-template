@@ -1,6 +1,6 @@
 const bindEvents = require('./bindEvents');
 const bindSchedule = require('./bindSchedule');
-const bindUserData = require('./bindUserData');
+const bindOwnData = require('./bindOwnData');
 
 // const Namespace = require('./../node_modules/socket.io/lib/namespace');
 // bindSchedule(Namespace.prototype);
@@ -40,7 +40,7 @@ io.on('connection', function (socket) {
      * 
      * 为socket添加UserData属性及setUserData和getUserData方法
      */
-    bindUserData(socket);
+    bindOwnData(socket);
 
     /**
      * 手动调用触发connect事件
@@ -48,5 +48,6 @@ io.on('connection', function (socket) {
     socket.listeners('connect')[0].call(socket);
 });
 bindSchedule(io);
+bindOwnData(io);
 io.listen(config.server.port, config.server.serverOptions);
 module.exports = io;

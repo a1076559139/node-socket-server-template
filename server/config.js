@@ -7,7 +7,7 @@ module.exports = {
         // password?: string
     },
     server: {
-        port: process.argv[2],
+        port: process.argv[2] || 30000,
         serverOptions: {
             /**
              * The path to server the client file to

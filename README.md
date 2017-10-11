@@ -14,7 +14,37 @@ ___
 let data = await libs.db.zhuFu.getZhuFu();
 ```
 ___
-events下方法被调用或者libs/db下方法被调用，都会打印log，包括[call]、[return](日志中包括方法所在文件及行列号以及参数/返回值)、[error]日志。如无特殊需求，用户代码区不需要try，直接throw程序就可以捕获并输出错误日志
+定时器（包括schedule、scheduleOnce、unschedule、unscheduleAllCallbacks，参数与cocos保持一致）
+```
+// 开关用户定时器
+let f = function (dt) {
+    console.log('dt', dt);
+}
+let id = this.client.schedule(f, 2000);//scheduleOnce
+this.client.unschedule(id);//this.client.unschedule(f);//unscheduleAllCallbacks
+
+// 开关全局定时器
+let f = function (dt) {
+    console.log('dt', dt);
+}
+let id = io.schedule(f, 2000);
+io.unschedule(id);//io.unschedule(f);
+```
+___
+内存数据存储
+```
+// 存储用户数据
+this.client.setData('data', '123456');
+// 读取用户数据
+let data = this.client.getData('data');
+
+// 存储全局数据
+io.setData('data', '123456');
+// 读取全局数据
+let data = io.getData('data');
+```
+___
+events下方法被调用或者libs/db下方法被调用，都会打印log，包括[call]、\[return\](日志中包括方法所在文件及行列号以及参数/返回值)、[error]日志。如无特殊需求，用户代码区不需要try，直接throw程序就可以捕获并输出错误日志
 ```
 qu.prototype.do = async function (fn) {
     fn(await libs.db.zhuFu.getZhuFu());
@@ -41,6 +71,6 @@ qu.prototype.do = async function (fn) {
 ```
 # CLIENT中
 ```
-目录：events/cmds/zhufu/fa.js
+SERVER目录：events/cmds/zhufu/fa.js
 客户端调用：socket.emit('cmds.zhufu.fa',...)
 ```
