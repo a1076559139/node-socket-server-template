@@ -327,7 +327,8 @@ var object = {
      * @returns {Boolean}
      */
     isObject: function (param) {
-        return (typeof param === 'object') && !(param instanceof Array);
+        //(typeof null === 'object')为真
+        return !!param && (typeof param === 'object') && !(param instanceof Array);
     },
     /**
      * 判断是否是空对象或数组
