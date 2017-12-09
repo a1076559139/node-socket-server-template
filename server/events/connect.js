@@ -34,7 +34,7 @@ connect.prototype.do = async function () {
     // let id = this.client.schedule(f, 2000);
     // this.client.unschedule(id);
     // this.client.unschedule(f);
-    
+
     // // 开关全局定时器
     // let f = function (dt) {
     //     console.log('dt', dt);
